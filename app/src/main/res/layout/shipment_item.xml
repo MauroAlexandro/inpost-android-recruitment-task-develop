@@ -24,6 +24,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            tools:text="Gotowa do odbioru" />
+            tools:text="@string/ready_to_pick_up" />
     </LinearLayout>
 </LinearLayout>
