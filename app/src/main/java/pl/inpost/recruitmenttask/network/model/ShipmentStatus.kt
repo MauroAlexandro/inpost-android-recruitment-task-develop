@@ -18,6 +18,7 @@ import pl.inpost.recruitmenttask.R
  * 11. OUT_FOR_DELIVERY
  * 12. READY_TO_PICKUP
  * 13. PICKUP_TIME_EXPIRED
+ * 14. NOT_READY
  */
 enum class ShipmentStatus(
     @StringRes val nameRes: Int
@@ -34,5 +35,6 @@ enum class ShipmentStatus(
     OUT_FOR_DELIVERY(R.string.status_out_for_delivery),
     PICKUP_TIME_EXPIRED(R.string.status_pickup_time_expired),
     READY_TO_PICKUP(R.string.status_ready_to_pickup),
-    RETURNED_TO_SENDER(R.string.status_returned_to_sender);
+    RETURNED_TO_SENDER(R.string.status_returned_to_sender),
+    NOT_READY(R.string.status_returned_to_sender);
 }
