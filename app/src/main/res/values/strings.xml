@@ -15,6 +15,10 @@
     <string name="status_ready_to_pickup">Ready to pick up</string>
     <string name="status_returned_to_sender">Return to the sender</string>
     <string name="ready_to_pick_up">Ready to pick up</string>
+    <string name="not_ready">Not Ready</string>
     <string name="the_remaining">The remaining</string>
     <string name="all">All</string>
+    <string name="item_number_of_parcel">NUMBER OF PARCEL</string>
+    <string name="item_status">STATUS</string>
+    <string name="item_sender">SENDER</string>
 </resources>

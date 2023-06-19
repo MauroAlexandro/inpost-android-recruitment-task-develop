@@ -1,0 +1,13 @@
+<resources>
+    <dimen name="header_title">13sp</dimen>
+    <dimen name="header_margin">16dp</dimen>
+    <dimen name="header_padding">20dp</dimen>
+    <dimen name="item_vertical_margin">16dp</dimen>
+    <dimen name="item_title">11sp</dimen>
+    <dimen name="item_parcel_number">15sp</dimen>
+    <dimen name="item_status">15sp</dimen>
+    <dimen name="item_out_for_delivery_status_image_width">50dp</dimen>
+    <dimen name="item_out_for_delivery_status_image_height">24dp</dimen>
+    <dimen name="item_status_image_width">38dp</dimen>
+    <dimen name="item_status_image_height">32dp</dimen>
+</resources>

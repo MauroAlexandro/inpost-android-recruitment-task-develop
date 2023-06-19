@@ -7,4 +7,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="background">#FFF2F2F2</color>
+    <color name="header">#FFBBBDBF</color>
+    <color name="header_divider">#FFE9E9E9</color>
+    <color name="item_title">#FF929497</color>
+    <color name="item_parcel_number">#FF404041</color>
+
 </resources>

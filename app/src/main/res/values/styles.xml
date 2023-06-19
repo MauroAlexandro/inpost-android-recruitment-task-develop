@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="HeaderStyle" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/header</item>
+        <item name="android:textSize">@dimen/header_title</item>
+        <item name="android:fontFamily">@font/montserrat_semibold</item>
+    </style>
+
+    <style name="ItemTitleStyle" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/item_title</item>
+        <item name="android:textSize">@dimen/item_title</item>
+        <item name="android:fontFamily">@font/montserrat_semibold</item>
+        <item name="android:layout_marginTop">@dimen/item_vertical_margin</item>
+    </style>
+
+    <style name="ItemParcelNumberStyle" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/item_parcel_number</item>
+        <item name="android:textSize">@dimen/item_parcel_number</item>
+        <item name="android:fontFamily">@font/montserrat_medium</item>
+    </style>
+
+    <style name="ItemStatusStyle" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/item_parcel_number</item>
+        <item name="android:textSize">@dimen/item_status</item>
+        <item name="android:fontFamily">@font/montserrat_bold</item>
+    </style>
+
+    <style name="ItemSenderStyle" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/item_parcel_number</item>
+        <item name="android:textSize">@dimen/item_status</item>
+        <item name="android:fontFamily">@font/montserrat_bold</item>
+    </style>
+
+    <style name="ItemReadyStyle" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/item_parcel_number</item>
+        <item name="android:textSize">@dimen/item_parcel_number</item>
+        <item name="android:fontFamily">@font/montserrat_medium</item>
+    </style>
+</resources>
