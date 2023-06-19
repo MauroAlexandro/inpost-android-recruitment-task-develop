@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/item_padding"
+    android:layout_margin="@dimen/header_item_layout_margin"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/shipment_number_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/item_number_of_parcel"
+        style="@style/ItemTitleStyle"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/shipment_number"/>
+
+    <ImageView
+        android:id="@+id/shipment_status_image"
+        android:layout_width="@dimen/item_status_image_width"
+        android:layout_height="@dimen/item_status_image_height"
+        android:scaleType="centerCrop"
+        android:layout_marginTop="@dimen/item_vertical_margin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/item_status" />
+
+    <TextView
+        android:id="@+id/shipment_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/ItemParcelNumberStyle"
+        app:layout_constraintTop_toBottomOf="@+id/shipment_number_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/status_title"/>
+
+    <TextView
+        android:id="@+id/status_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/item_status"
+        style="@style/ItemTitleStyle"
+        app:layout_constraintTop_toBottomOf="@+id/shipment_number"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ready_title"
+        app:layout_constraintBottom_toTopOf="@+id/status"/>
+
+    <TextView
+        android:id="@+id/status"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent=".5"
+        android:layout_height="wrap_content"
+        style="@style/ItemStatusStyle"
+        app:layout_constraintTop_toBottomOf="@+id/status_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ready"
+        app:layout_constraintBottom_toTopOf="@+id/sender_title"/>
+
+    <TextView
+        android:id="@+id/ready_title"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent=".5"
+        android:layout_height="wrap_content"
+        android:text="@string/item_status"
+        android:textAllCaps="true"
+        style="@style/ItemTitleStyle"
+        app:layout_constraintTop_toBottomOf="@+id/shipment_status_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/status"
+        android:gravity="end"/>
+
+    <TextView
+        android:id="@+id/ready"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent=".5"
+        android:layout_height="wrap_content"
+        style="@style/ItemReadyStyle"
+        app:layout_constraintTop_toBottomOf="@+id/ready_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/sender_title"
+        android:gravity="end"/>
+
+    <TextView
+        android:id="@+id/sender_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/item_sender"
+        style="@style/ItemTitleStyle"
+        app:layout_constraintTop_toBottomOf="@+id/status"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/sender"/>
+
+    <TextView
+        android:id="@+id/sender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/ItemSenderStyle"
+        app:layout_constraintTop_toBottomOf="@+id/sender_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

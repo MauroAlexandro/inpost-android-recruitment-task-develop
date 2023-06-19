@@ -2,24 +2,33 @@ package pl.inpost.recruitmenttask.presentation.shipmentList
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import pl.inpost.recruitmenttask.R
 import pl.inpost.recruitmenttask.databinding.FragmentShipmentListBinding
-import pl.inpost.recruitmenttask.databinding.ShipmentItemBinding
+import pl.inpost.recruitmenttask.network.model.ShipmentNetwork
+import pl.inpost.recruitmenttask.presentation.shipmentList.adapters.Header
+import pl.inpost.recruitmenttask.presentation.shipmentList.adapters.ShipmentsAdapter
 
 @AndroidEntryPoint
 class ShipmentListFragment : Fragment() {
 
     private val viewModel: ShipmentListViewModel by viewModels()
     private var binding: FragmentShipmentListBinding? = null
+    private lateinit var shipmentsAdapter: ShipmentsAdapter
+    private var shipmentsList : MutableList<Any> = ArrayList()
+    private var readyToPickupShipmentsList : MutableList<Any> = ArrayList()
+    private var remainingShipmentsList : MutableList<Any> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.shipment_list_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
@@ -32,15 +41,35 @@ class ShipmentListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         viewModel.viewState.observe(requireActivity()) { shipments ->
-            shipments.forEach { shipmentNetwork ->
-                val shipmentItemBinding = ShipmentItemBinding.inflate(layoutInflater).apply {
-                    shipmentNumber.text = shipmentNetwork.number
-                    status.text = shipmentNetwork.status
-                }
-                binding?.scrollViewContent?.addView(shipmentItemBinding.root)
+            if (shipments.isNotEmpty()) {
+                shipmentsList = getShipmentsListWithHeaders(shipments)
+                shipmentsAdapter = context?.let { ShipmentsAdapter(it, shipmentsList) }!!
+                binding?.shipmentsRecyclerview?.adapter = shipmentsAdapter
+                binding?.shipmentsRecyclerview?.layoutManager = LinearLayoutManager(
+                    context,
+                    LinearLayoutManager.VERTICAL,
+                    false
+                )
             }
         }
+    }
+
+    /**
+     * Add the Headers for the List
+     * - Ready for Pick up
+     * - Remaining
+     */
+    private fun getShipmentsListWithHeaders(shipments: List<ShipmentNetwork>): MutableList<Any> {
+        shipmentsList = ArrayList()
+        shipmentsList.add(Header(getString(R.string.status_ready_to_pickup)))
+        readyToPickupShipmentsList = shipments.filter { it.operations.highlight }.toMutableList()
+        shipmentsList.addAll(readyToPickupShipmentsList)
+        shipmentsList.add(Header(getString(R.string.the_remaining)))
+        remainingShipmentsList = shipments.filter { !it.operations.highlight }.toMutableList()
+        shipmentsList.addAll(remainingShipmentsList)
+        return shipmentsList
     }
 
     override fun onDestroyView() {

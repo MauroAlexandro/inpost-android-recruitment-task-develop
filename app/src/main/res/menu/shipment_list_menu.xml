@@ -2,15 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/readyToPickupShipmentsMenu"
+        android:id="@+id/ready_to_pickup_shipments_menu"
         android:title="@string/ready_to_pick_up"
         app:showAsAction="never" />
     <item
-        android:id="@+id/otherShipmentsMenu"
+        android:id="@+id/other_shipments_menu"
         android:title="@string/the_remaining"
         app:showAsAction="never" />
     <item
-        android:id="@+id/allShipmentsMenu"
+        android:id="@+id/all_shipments_menu"
         android:title="@string/all"
         app:showAsAction="never" />
 </menu>
