@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColorPrimary">@android:color/black</item>
+    </style>
+
     <style name="HeaderStyle" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/header</item>
         <item name="android:textSize">@dimen/header_title</item>
