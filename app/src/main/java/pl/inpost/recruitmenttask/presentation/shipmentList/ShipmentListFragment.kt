@@ -34,6 +34,26 @@ class ShipmentListFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.ready_to_pickup_shipments_menu -> {
+                // Handle Share item selection
+                shipmentsAdapter.setItems(readyToPickupShipmentsList)
+                return true
+            }
+            R.id.other_shipments_menu -> {
+                // Handle Settings item selection
+                shipmentsAdapter.setItems(remainingShipmentsList)
+                return true
+            }
+            R.id.all_shipments_menu -> {
+                shipmentsAdapter.setItems(shipmentsList)
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentShipmentListBinding.inflate(inflater, container, false)
         return requireNotNull(binding).root
