@@ -54,6 +54,18 @@ class ShipmentListFragment : Fragment() {
                 )
             }
         }
+
+        binding?.swipeRefresh?.setOnRefreshListener {
+            getShipmentsFromService()
+            binding?.swipeRefresh?.isRefreshing = false
+        }
+    }
+
+    /**
+     * On Swipe to Refresh It calls refreshData from ViewModel
+     */
+    private fun getShipmentsFromService() {
+        viewModel.refreshData()
     }
 
     /**
