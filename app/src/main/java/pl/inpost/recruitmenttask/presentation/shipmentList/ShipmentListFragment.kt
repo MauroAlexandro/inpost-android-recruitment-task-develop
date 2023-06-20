@@ -6,10 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import pl.inpost.recruitmenttask.R
-import pl.inpost.recruitmenttask.database.ShipmentNetworkDao
 import pl.inpost.recruitmenttask.database.ShipmentsDatabase
 import pl.inpost.recruitmenttask.databinding.FragmentShipmentListBinding
 import pl.inpost.recruitmenttask.network.model.ShipmentNetwork

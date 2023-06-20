@@ -6,9 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import pl.inpost.recruitmenttask.R
 import pl.inpost.recruitmenttask.database.ShipmentNetworkDao
@@ -22,18 +20,18 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ShipmentListViewModel @Inject constructor(
-    private val shipmentApi: ShipmentApi
+    private val shipmentApi: ShipmentApi?
 ) : ViewModel() {
 
     private val mutableViewState = MutableLiveData<List<ShipmentNetwork>>(emptyList())
     val viewState: LiveData<List<ShipmentNetwork>> = mutableViewState
     private var shipmentsByStatusList : MutableList<Any> = ArrayList()
-    private var readyToPickupShipmentsList : MutableList<Any> = ArrayList()
-    private var remainingShipmentsList : MutableList<Any> = ArrayList()
-    private var shipmentsByParcelNumberList : MutableList<Any> = ArrayList()
-    private var shipmentsByPickupDateList : MutableList<Any> = ArrayList()
-    private var shipmentsByExpireDateList : MutableList<Any> = ArrayList()
-    private var shipmentsByStoredDateList : MutableList<Any> = ArrayList()
+    private var readyToPickupShipmentsList : MutableList<ShipmentNetwork> = ArrayList()
+    private var remainingShipmentsList : MutableList<ShipmentNetwork> = ArrayList()
+    private var shipmentsByParcelNumberList : MutableList<ShipmentNetwork> = ArrayList()
+    private var shipmentsByPickupDateList : MutableList<ShipmentNetwork> = ArrayList()
+    private var shipmentsByExpireDateList : MutableList<ShipmentNetwork> = ArrayList()
+    private var shipmentsByStoredDateList : MutableList<ShipmentNetwork> = ArrayList()
     private lateinit var shipmentsDatabase : ShipmentsDatabase
     private lateinit var shipmentNetworkRepository : ShipmentNetworkRepository
     private lateinit var shipmentNetworkDao: ShipmentNetworkDao
@@ -62,11 +60,13 @@ class ShipmentListViewModel @Inject constructor(
      */
     fun refreshData() {
         viewModelScope.launch(Dispatchers.Main) {
-            val shipments = shipmentApi.getShipments()
-            mutableViewState.setState { shipments }
+            if (shipmentApi != null) {
+                val shipments = shipmentApi.getShipments()
+                mutableViewState.setState { shipments }
 
-            for (i in shipments ){
-                insert(i)
+                for (i in shipments ){
+                    insert(i)
+                }
             }
         }
     }
@@ -89,7 +89,7 @@ class ShipmentListViewModel @Inject constructor(
     /**
      * Store all different lists in order to filter it on Home Screen
      */
-    private fun arrangeListsForFilter(shipments: List<ShipmentNetwork>) {
+    internal fun arrangeListsForFilter(shipments: List<ShipmentNetwork>) {
         readyToPickupShipmentsList = shipments.filter { it.operations.highlight }.toMutableList()
         remainingShipmentsList = shipments.filter { !it.operations.highlight }.toMutableList()
         shipmentsByParcelNumberList = shipments.sortedByDescending { it.number }.toMutableList()
@@ -101,42 +101,42 @@ class ShipmentListViewModel @Inject constructor(
     /**
      * Returns the list of Ready to Pick Up Shipments
      */
-    fun getReadyShipments(): MutableList<Any> {
+    fun getReadyShipments(): MutableList<ShipmentNetwork> {
         return readyToPickupShipmentsList
     }
 
     /**
      * Returns the list of Remaining Shipments
      */
-    fun getRemainingShipments(): MutableList<Any> {
+    fun getRemainingShipments(): MutableList<ShipmentNetwork> {
         return remainingShipmentsList
     }
 
     /**
      * Returns the Shipments by Parcel Number Descending
      */
-    fun getShipmentsByParcelNumber(): MutableList<Any> {
+    fun getShipmentsByParcelNumber(): MutableList<ShipmentNetwork> {
         return shipmentsByParcelNumberList
     }
 
     /**
      * Returns the Shipments by Pickup Date Descending
      */
-    fun getShipmentsByPickupDate(): MutableList<Any> {
+    fun getShipmentsByPickupDate(): MutableList<ShipmentNetwork> {
         return shipmentsByPickupDateList
     }
 
     /**
      * Returns the Shipments by Expire Date Descending
      */
-    fun getShipmentsByExpireDate(): MutableList<Any> {
+    fun getShipmentsByExpireDate(): MutableList<ShipmentNetwork> {
         return shipmentsByExpireDateList
     }
 
     /**
      * Returns the Shipments by Stored Date Descending
      */
-    fun getShipmentsByStoredDate(): MutableList<Any> {
+    fun getShipmentsByStoredDate(): MutableList<ShipmentNetwork> {
         return shipmentsByStoredDateList
     }
 }
