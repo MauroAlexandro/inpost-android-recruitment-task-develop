@@ -4,7 +4,6 @@ import android.content.Context
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.delay
 import pl.inpost.recruitmenttask.R
 import pl.inpost.recruitmenttask.network.ApiTypeAdapter
 import pl.inpost.recruitmenttask.network.model.*
@@ -35,7 +34,7 @@ class MockShipmentApi(
     }
 }
 
-private fun mockShipmentNetwork(
+fun mockShipmentNetwork(
     number: String = Random.nextLong(1, 9999_9999_9999_9999).toString(),
     type: ShipmentType = ShipmentType.PARCEL_LOCKER,
     status: ShipmentStatus = ShipmentStatus.DELIVERED,
@@ -86,3 +85,30 @@ private fun mockOperationsNetwork(
     expandAvizo = expandAvizo,
     endOfWeekCollection = endOfWeekCollection
 )
+
+fun mockShipmentNetworkList(): List<ShipmentNetwork> {
+    val mockOperationsNetwork = OperationsNetwork(
+        manualArchive = false,
+        delete = false,
+        collect = false,
+        highlight = true,
+        expandAvizo = false,
+        endOfWeekCollection = false
+    )
+    val firstMockShipmentNetwork = mockShipmentNetwork(
+        number = "0000001",
+        status = ShipmentStatus.READY_TO_PICKUP,
+        operations = mockOperationsNetwork
+    )
+
+    val secondMockShipmentNetwork = mockShipmentNetwork(
+        number = "0000002",
+        status = ShipmentStatus.OUT_FOR_DELIVERY
+    )
+
+    val mockShipmentNetworkList: ArrayList<ShipmentNetwork> = ArrayList()
+    mockShipmentNetworkList.add(firstMockShipmentNetwork)
+    mockShipmentNetworkList.add(secondMockShipmentNetwork)
+
+    return mockShipmentNetworkList
+}
