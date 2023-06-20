@@ -75,6 +75,7 @@ class ShipmentsAdapter (
             //This way you can also see that that item is hidden because is archived
             if(Utils.shipmentIsArchived(context, shipment.number)) {
                 holder.shipmentItemLayout.visibility = GONE
+                item.operations.manualArchive = true
             } else {
                 holder.shipmentItemLayout.visibility = VISIBLE
             }
@@ -105,6 +106,7 @@ class ShipmentsAdapter (
 
             holder.shipmentItemLayout.setOnLongClickListener {
                 Utils.archiveShipmentsOnSharedPreferences(context, shipment.number)
+                item.operations.manualArchive = true
                 notifyItemChanged(position)
                 true
             }
