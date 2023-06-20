@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     android:padding="@dimen/item_padding"
     android:layout_margin="@dimen/header_item_layout_margin"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:id="@+id/shipment_item_layout">
 
     <TextView
         android:id="@+id/shipment_number_title"

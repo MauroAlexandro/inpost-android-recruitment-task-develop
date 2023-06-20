@@ -3,11 +3,13 @@ package pl.inpost.recruitmenttask.presentation.shipmentList.adapters
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import pl.inpost.recruitmenttask.R
 import pl.inpost.recruitmenttask.network.model.ShipmentNetwork
@@ -65,13 +67,23 @@ class ShipmentsAdapter (
         val item = itemsList[position]
 
         if(holder is SectionTitleViewHolder){
-            holder.sectionTitleTextView.text = (item as Header).headerTitle
+            val header = (item as Header)
+            holder.sectionTitleTextView.text = header.headerTitle
         } else if (holder is SectionContentViewHolder){
-            holder.shipmentNumber.text = (item as ShipmentNetwork).number
-            holder.status.text = context.getString(item.status.nameRes)
-            holder.sender.text = item.sender?.email
+            val shipment = item as ShipmentNetwork
+            //Since 'Design is not important here' I've let It take an empty space, but ideal was to remove from the list
+            //This way you can also see that that item is hidden because is archived
+            if(Utils.shipmentIsArchived(context, shipment.number)) {
+                holder.shipmentItemLayout.visibility = GONE
+            } else {
+                holder.shipmentItemLayout.visibility = VISIBLE
+            }
 
-            if(item.status.name == delivery) {
+            holder.shipmentNumber.text = shipment.number
+            holder.status.text = context.getString(shipment.status.nameRes)
+            holder.sender.text = shipment.sender?.email
+
+            if(shipment.status.name == delivery) {
                 holder.statusImage.setBackgroundResource(R.mipmap.out_for_delivery)
                 holder.statusImage.layoutParams.width = context.resources.getDimension(R.dimen.item_out_for_delivery_status_image_width).toInt()
                 holder.statusImage.layoutParams.height = context.resources.getDimension(R.dimen.item_out_for_delivery_status_image_height).toInt()
@@ -81,14 +93,20 @@ class ShipmentsAdapter (
                 holder.statusImage.layoutParams.height = context.resources.getDimension(R.dimen.item_status_image_height).toInt()
             }
 
-            if(item.status.name == ready) {
+            if(shipment.status.name == ready) {
                 holder.readyTitle.visibility = VISIBLE
-                holder.readyTitle.text = context.getString(item.status.nameRes)
+                holder.readyTitle.text = context.getString(shipment.status.nameRes)
                 holder.ready.visibility = VISIBLE
-                holder.ready.text = Utils.convertDate(item.storedDate)
+                holder.ready.text = Utils.convertDate(shipment.storedDate)
             } else {
                 holder.readyTitle.visibility = INVISIBLE
                 holder.ready.visibility = INVISIBLE
+            }
+
+            holder.shipmentItemLayout.setOnLongClickListener {
+                Utils.archiveShipmentsOnSharedPreferences(context, shipment.number)
+                notifyItemChanged(position)
+                true
             }
         }
     }
@@ -99,6 +117,7 @@ class SectionTitleViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 }
 
 class SectionContentViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    val shipmentItemLayout: ConstraintLayout = view.findViewById(R.id.shipment_item_layout)
     val shipmentNumber: TextView = view.findViewById(R.id.shipment_number)
     val status: TextView = view.findViewById(R.id.status)
     val statusImage: ImageView = view.findViewById(R.id.shipment_status_image)
