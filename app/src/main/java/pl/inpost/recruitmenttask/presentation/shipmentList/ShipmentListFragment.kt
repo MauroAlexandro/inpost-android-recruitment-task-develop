@@ -2,7 +2,6 @@ package pl.inpost.recruitmenttask.presentation.shipmentList
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,7 +9,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import pl.inpost.recruitmenttask.R
 import pl.inpost.recruitmenttask.databinding.FragmentShipmentListBinding
 import pl.inpost.recruitmenttask.network.model.ShipmentNetwork
-import pl.inpost.recruitmenttask.presentation.shipmentList.adapters.Header
 import pl.inpost.recruitmenttask.presentation.shipmentList.adapters.ShipmentsAdapter
 
 @AndroidEntryPoint
@@ -19,9 +17,8 @@ class ShipmentListFragment : Fragment() {
     private val viewModel: ShipmentListViewModel by viewModels()
     private var binding: FragmentShipmentListBinding? = null
     private lateinit var shipmentsAdapter: ShipmentsAdapter
-    private var shipmentsList : MutableList<Any> = ArrayList()
-    private var readyToPickupShipmentsList : MutableList<Any> = ArrayList()
-    private var remainingShipmentsList : MutableList<Any> = ArrayList()
+    private var allShipmentsListFromService : MutableList<ShipmentNetwork> = ArrayList()
+    private var shipmentsByStatusList : MutableList<Any> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,20 +31,41 @@ class ShipmentListFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.ready_to_pickup_shipments_menu -> {
                 // Handle Share item selection
-                shipmentsAdapter.setItems(readyToPickupShipmentsList)
+                shipmentsAdapter.setItems(viewModel.getReadyShipments())
                 return true
             }
             R.id.other_shipments_menu -> {
                 // Handle Settings item selection
-                shipmentsAdapter.setItems(remainingShipmentsList)
+                shipmentsAdapter.setItems(viewModel.getRemainingShipments())
+                return true
+            }
+            R.id.parcel_number_menu -> {
+                // Handle Settings item selection
+                shipmentsAdapter.setItems(viewModel.getShipmentsByParcelNumber())
+                return true
+            }
+            R.id.pickup_date_menu -> {
+                // Handle Settings item selection
+                shipmentsAdapter.setItems(viewModel.getShipmentsByPickupDate())
+                return true
+            }
+            R.id.expire_date_menu -> {
+                // Handle Settings item selection
+                shipmentsAdapter.setItems(viewModel.getShipmentsByExpireDate())
+                return true
+            }
+            R.id.stored_date_menu -> {
+                // Handle Settings item selection
+                shipmentsAdapter.setItems(viewModel.getShipmentsByStoredDate())
                 return true
             }
             R.id.all_shipments_menu -> {
-                shipmentsAdapter.setItems(shipmentsList)
+                shipmentsAdapter.setItems(shipmentsByStatusList)
                 return true
             }
             else -> return super.onOptionsItemSelected(item)
@@ -64,8 +82,9 @@ class ShipmentListFragment : Fragment() {
 
         viewModel.viewState.observe(requireActivity()) { shipments ->
             if (shipments.isNotEmpty()) {
-                shipmentsList = getShipmentsListWithHeaders(shipments)
-                shipmentsAdapter = context?.let { ShipmentsAdapter(it, shipmentsList) }!!
+                allShipmentsListFromService = shipments.toMutableList()
+                shipmentsByStatusList = viewModel.getShipmentsListWithHeaders(requireContext(), allShipmentsListFromService)
+                shipmentsAdapter = context?.let { ShipmentsAdapter(it, shipmentsByStatusList) }!!
                 binding?.shipmentsRecyclerview?.adapter = shipmentsAdapter
                 binding?.shipmentsRecyclerview?.layoutManager = LinearLayoutManager(
                     context,
@@ -86,22 +105,6 @@ class ShipmentListFragment : Fragment() {
      */
     private fun getShipmentsFromService() {
         viewModel.refreshData()
-    }
-
-    /**
-     * Add the Headers for the List
-     * - Ready for Pick up
-     * - Remaining
-     */
-    private fun getShipmentsListWithHeaders(shipments: List<ShipmentNetwork>): MutableList<Any> {
-        shipmentsList = ArrayList()
-        shipmentsList.add(Header(getString(R.string.status_ready_to_pickup)))
-        readyToPickupShipmentsList = shipments.filter { it.operations.highlight }.toMutableList()
-        shipmentsList.addAll(readyToPickupShipmentsList)
-        shipmentsList.add(Header(getString(R.string.the_remaining)))
-        remainingShipmentsList = shipments.filter { !it.operations.highlight }.toMutableList()
-        shipmentsList.addAll(remainingShipmentsList)
-        return shipmentsList
     }
 
     override fun onDestroyView() {

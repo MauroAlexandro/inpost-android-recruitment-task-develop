@@ -18,7 +18,11 @@
     <string name="not_ready">Nie gotowy</string>
     <string name="the_remaining">Pozostałe</string>
     <string name="all">Wszystkie</string>
-    <string name="item_number_of_parcel">NR PRZESYŁKI</string>
+    <string name="number">Nr Przesyłki</string>
+    <string name="pickup_date">Wybierz datę</string>
+    <string name="expire_date">Data ważności</string>
+    <string name="stored_date">Zapisana data</string>
+    <string name="item_parcel_number">NR PRZESYŁKI</string>
     <string name="item_status">STATUS</string>
     <string name="item_sender">NADAWCA</string>
 </resources>

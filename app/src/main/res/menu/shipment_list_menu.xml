@@ -10,6 +10,22 @@
         android:title="@string/the_remaining"
         app:showAsAction="never" />
     <item
+        android:id="@+id/parcel_number_menu"
+        android:title="@string/number"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/pickup_date_menu"
+        android:title="@string/pickup_date"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/expire_date_menu"
+        android:title="@string/expire_date"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/stored_date_menu"
+        android:title="@string/stored_date"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/all_shipments_menu"
         android:title="@string/all"
         app:showAsAction="never" />

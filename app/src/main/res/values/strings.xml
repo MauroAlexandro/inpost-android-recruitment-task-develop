@@ -18,7 +18,11 @@
     <string name="not_ready">Not Ready</string>
     <string name="the_remaining">The remaining</string>
     <string name="all">All</string>
-    <string name="item_number_of_parcel">NUMBER OF PARCEL</string>
+    <string name="number">Parcel Number</string>
+    <string name="pickup_date">PickUp date</string>
+    <string name="expire_date">Expire date</string>
+    <string name="stored_date">Stored date</string>
+    <string name="item_parcel_number">PARCEL NUMBER</string>
     <string name="item_status">STATUS</string>
     <string name="item_sender">SENDER</string>
 </resources>
