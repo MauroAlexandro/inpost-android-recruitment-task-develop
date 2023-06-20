@@ -29,16 +29,9 @@ class MockShipmentApi(
 
         jsonAdapter.fromJson(json) as ShipmentsResponse
     }
-    private var firstUse = true
 
     override suspend fun getShipments(): List<ShipmentNetwork> {
-        delay(1000)
-        return if (firstUse) {
-            firstUse = false
-            emptyList()
-        } else {
-            response.shipments
-        }
+        return response.shipments
     }
 }
 
@@ -57,7 +50,7 @@ private fun mockShipmentNetwork(
 ) = ShipmentNetwork(
     number = number,
     shipmentType = type.name,
-    status = status.name,
+    status = status,
     eventLog = eventLog,
     openCode = openCode,
     expiryDate = expireDate,

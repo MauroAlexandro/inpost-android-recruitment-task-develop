@@ -6,7 +6,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import pl.inpost.recruitmenttask.R
+import pl.inpost.recruitmenttask.database.ShipmentNetworkDao
+import pl.inpost.recruitmenttask.database.ShipmentsDatabase
 import pl.inpost.recruitmenttask.databinding.FragmentShipmentListBinding
 import pl.inpost.recruitmenttask.network.model.ShipmentNetwork
 import pl.inpost.recruitmenttask.presentation.shipmentList.adapters.ShipmentsAdapter
@@ -19,10 +23,12 @@ class ShipmentListFragment : Fragment() {
     private lateinit var shipmentsAdapter: ShipmentsAdapter
     private var allShipmentsListFromService : MutableList<ShipmentNetwork> = ArrayList()
     private var shipmentsByStatusList : MutableList<Any> = ArrayList()
+    private lateinit var shipmentsDatabase : ShipmentsDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        shipmentsDatabase = ShipmentsDatabase.getInstance(requireContext())
     }
 
     @Deprecated("Deprecated in Java")
@@ -79,7 +85,7 @@ class ShipmentListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        viewModel.setShipmentsDatabase(shipmentsDatabase)
         viewModel.viewState.observe(requireActivity()) { shipments ->
             if (shipments.isNotEmpty()) {
                 allShipmentsListFromService = shipments.toMutableList()

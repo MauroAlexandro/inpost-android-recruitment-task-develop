@@ -6,9 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import pl.inpost.recruitmenttask.R
+import pl.inpost.recruitmenttask.database.ShipmentNetworkDao
+import pl.inpost.recruitmenttask.database.ShipmentNetworkRepository
+import pl.inpost.recruitmenttask.database.ShipmentsDatabase
 import pl.inpost.recruitmenttask.network.api.ShipmentApi
 import pl.inpost.recruitmenttask.network.model.ShipmentNetwork
 import pl.inpost.recruitmenttask.presentation.shipmentList.adapters.Header
@@ -29,15 +34,40 @@ class ShipmentListViewModel @Inject constructor(
     private var shipmentsByPickupDateList : MutableList<Any> = ArrayList()
     private var shipmentsByExpireDateList : MutableList<Any> = ArrayList()
     private var shipmentsByStoredDateList : MutableList<Any> = ArrayList()
+    private lateinit var shipmentsDatabase : ShipmentsDatabase
+    private lateinit var shipmentNetworkRepository : ShipmentNetworkRepository
+    private lateinit var shipmentNetworkDao: ShipmentNetworkDao
+
+    fun setShipmentsDatabase(shipmentsDatabase : ShipmentsDatabase) {
+        this.shipmentsDatabase = shipmentsDatabase
+        shipmentNetworkDao = shipmentsDatabase.shipmentNetworkDao()
+        shipmentNetworkRepository = ShipmentNetworkRepository(shipmentNetworkDao)
+    }
+
+    /**
+     * Insert Shipment into Room Database
+     */
+    private fun insert(shipmentNetwork: ShipmentNetwork) = viewModelScope.launch {
+        launch(Dispatchers.IO) {
+            shipmentNetworkRepository.insert(shipmentNetwork)
+        }
+    }
 
     init {
         refreshData()
     }
 
+    /**
+     * Get Shipments from Service
+     */
     fun refreshData() {
         viewModelScope.launch(Dispatchers.Main) {
             val shipments = shipmentApi.getShipments()
             mutableViewState.setState { shipments }
+
+            for (i in shipments ){
+                insert(i)
+            }
         }
     }
 
